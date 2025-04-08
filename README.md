@@ -54,18 +54,7 @@ code SelectiveRepeatProtocol
    - Right-click on msr.html
    - Select "Open with Live Server"
    - The project will open in your default browser at http://127.0.0.1:5500/msr.html (or similar port)
-
-#### Method 3: Using Any HTTP Server
-
-Install a simple HTTP server (like Python's built-in server):
-```bash
-# If you have Python installed
-python -m http.server
-```
-
-Open in your browser:
-- Navigate to http://localhost:8000 in your browser
-- Click on msr.html
+     
 
 ## 💻 Using the Simulation
 
