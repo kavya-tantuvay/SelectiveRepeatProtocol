@@ -1,136 +1,154 @@
-🌐 Selective Repeat Protocol Visualization
-📋 Overview
-This interactive visualization demonstrates the Selective Repeat ARQ Protocol, a fundamental reliable data transfer protocol used in computer networks. Experience how packets are transmitted, acknowledged, lost, and retransmitted in a controlled environment.
+# Selective Repeat Protocol Visualization
 
-✨ Features
+An interactive web-based visualization of the Selective Repeat ARQ Protocol, demonstrating how this reliable data transfer protocol works in computer networks.
 
-📊 Real-time visualization of the Selective Repeat protocol in action
-🎛️ Configurable parameters (window size, packet count, loss rates)
-⏱️ Adjustable simulation speed for detailed or accelerated viewing
-📈 Live statistics tracking efficiency and performance metrics
-📝 Detailed event logging for protocol behavior analysis
+![Protocol Visualization](https://raw.githubusercontent.com/kavya-tantuvay/SelectiveRepeatProtocol/main/assets/preview.png)
 
+## 📋 About The Project
 
-🚀 Quick Start Guide
-System Requirements
+This project provides an educational visualization of the Selective Repeat Protocol, allowing users to observe and interact with the protocol's key mechanisms:
 
-Any modern web browser (Chrome, Firefox, Edge, Safari)
-JavaScript enabled
+- Sliding window flow control
+- Selective packet acknowledgment
+- Timeout and retransmission handling
+- Packet loss recovery
 
-Installation in 3 Easy Steps
+## 🚀 Getting Started
 
-Download all three project files:
-Copymsr.html   - Main HTML structure
-msr.css    - Visualization styling
-msr.js     - Protocol implementation
+### Prerequisites
 
-Save all files in the same directory/folder
-Open msr.html in your web browser
+- Any modern web browser (Chrome, Firefox, Edge, Safari)
+- JavaScript enabled in your browser
 
-Simply double-click the file or drag it into your browser
+### Installation & Running the Project
 
+#### Method 1: Direct Download and Open
 
+Clone the repository or download the ZIP file:
+```bash
+git clone https://github.com/kavya-tantuvay/SelectiveRepeatProtocol.git
+```
 
-That's it! No server setup, compilation, or additional libraries required.
+Navigate to the project directory:
+```bash
+cd SelectiveRepeatProtocol
+```
 
-🎮 Using the Simulation
-Configuration Panel
-ParameterDescriptionRangeWindow SizeNumber of unacknowledged packets allowed in transit1-8Total PacketsTotal number of packets to transmit1-30Packet Loss RateProbability of packet loss during transmission0-100%ACK Loss RateProbability of acknowledgment loss0-100%TimeoutDuration before packet retransmission500-10000ms
-Control Buttons
+Open the HTML file directly in your browser:
+- Double-click on msr.html, or
+- Drag msr.html into an open browser window
 
-▶️ START SIMULATION: Begin with current parameters
-⏸️ PAUSE: Temporarily halt the simulation
-▶️ RESUME: Continue a paused simulation
-🔄 RESET: Clear all data and return to initial state
+#### Method 2: Using VS Code Live Server
 
-Speed Control
-Use the slider to adjust simulation speed from 0.5× (slower) to 2× (faster)
+1. Install Visual Studio Code if you haven't already: [Download VS Code](https://code.visualstudio.com/download)
+2. Install the Live Server extension:
+   - Open VS Code
+   - Go to Extensions (or press Ctrl+Shift+X)
+   - Search for "Live Server"
+   - Click "Install" on the extension by Ritwick Dey
 
-🎯 Understanding the Visualization
-Visual Components
+3. Open the project folder in VS Code:
+```bash
+code SelectiveRepeatProtocol
+```
 
+4. Launch with Live Server:
+   - Right-click on msr.html
+   - Select "Open with Live Server"
+   - The project will open in your default browser at http://127.0.0.1:5500/msr.html (or similar port)
 
-Sender Area
+#### Method 3: Using Any HTTP Server
 
-Displays all packets with their current status
-Shows the current sliding window (blue dashed border)
+Install a simple HTTP server (like Python's built-in server):
+```bash
+# If you have Python installed
+python -m http.server
+```
 
+Open in your browser:
+- Navigate to http://localhost:8000 in your browser
+- Click on msr.html
 
-Transmission Line
+## 💻 Using the Simulation
 
-Animates packets and acknowledgments in transit
-Shows packet loss and ACK loss events
+### Configure parameters:
 
+- **Window Size**: Number of unacknowledged packets allowed (1-8)
+- **Total Packets**: Number of packets to transmit (1-30)
+- **Packet Loss Rate**: Probability of packet loss (0-100%)
+- **ACK Loss Rate**: Probability of acknowledgment loss (0-100%)
+- **Timeout**: Duration before retransmission (500-10000ms)
 
-Receiver Area
+### Control the simulation:
 
-Displays successfully received packets
+- Click **START SIMULATION** to begin
+- Use **PAUSE/RESUME** to control the flow
+- Use **RESET** to start over
+- Adjust the speed slider to speed up or slow down the simulation
 
+### Observe the protocol in action:
 
+- Watch packets move between sender and receiver
+- See how lost packets are retransmitted
+- Observe the sliding window mechanism
+- Review statistics and the event log
 
-Packet Color Legend
-ColorStatusDescriptionShow Image GrayUnsentPacket waiting to be transmittedShow Image GoldSentPacket in transmissionShow Image GreenAcknowledgedSuccessfully delivered and acknowledgedShow Image CrimsonTimeoutPacket timed out, awaiting retransmissionShow Image OrangeRedLostPacket lost during transmissionShow Image BlueReceivedPacket received by receiver
-Statistics Panel
+## 🎯 Understanding the Visualization
 
-Packets Sent: Total packets transmitted (including retransmissions)
-Packets Successfully Delivered: Packets that reached the receiver
-Packets Lost: Packets that failed to reach the receiver
-ACKs Lost: Acknowledgments that failed to reach the sender
-Retransmissions: Number of packet retransmissions
-Efficiency: Ratio of successful deliveries to total transmissions
+### Visual Components
 
-Status Log
-Provides a detailed timeline of events during the simulation, including:
+- **Sender Area**: Shows all packets and the current sliding window
+- **Transmission Line**: Displays packets and acknowledgments in transit
+- **Receiver Area**: Shows successfully received packets
+- **Statistics Panel**: Displays performance metrics
+- **Status Log**: Provides a detailed timeline of events
 
-Packet transmissions
-Packet losses
-Acknowledgment transmissions
-Acknowledgment losses
-Timeouts and retransmissions
-Window advancements
+### Packet Status Color Code
 
+| Color | Status | Description |
+|-------|--------|-------------|
+| Gray | Unsent | Packet waiting to be transmitted |
+| Gold | Sent | Packet in transmission |
+| Green | Acknowledged | Successfully delivered and acknowledged |
+| Crimson | Timeout | Packet timed out, awaiting retransmission |
+| OrangeRed | Lost | Packet lost during transmission |
+| Blue | Received | Packet received by receiver |
 
-💡 Learning Opportunities
+## 💡 Educational Value
 
-Observe how the sliding window mechanism improves throughput
-Learn how selective retransmission enhances efficiency
-Understand the relationship between window size, timeout values, and protocol performance
-Experiment with different loss rates to see impact on throughput
-Analyze efficiency metrics under various network conditions
+This visualization helps users understand:
 
+- How sliding window protocols improve network efficiency
+- The mechanism of selective retransmission
+- Effects of packet loss on protocol performance
+- The importance of proper timeout configuration
 
-❓ Troubleshooting
-IssueSolutionVisualization doesn't appear• Ensure JavaScript is enabled<br>• Verify all three files are in the same directory<br>• Try a different browserSluggish animations• Reduce window size and total packet count<br>• Lower the simulation speed<br>• Close other resource-intensive applicationsUnexpected behavior• Click RESET and restart the simulation<br>• Refresh the browser page<br>• Clear browser cache
+## ❓ Troubleshooting
 
-🔍 Example Workflow
+- **Nothing appears**: Verify JavaScript is enabled in your browser
+- **Slow animations**: Try reducing window size or total packets
+- **Page doesn't load**: Check that all files are in the same directory
 
-Set Window Size to 4
-Set Total Packets to 12
-Set Packet Loss Rate to 20%
-Set ACK Loss Rate to 10%
-Set Timeout to 3000ms
-Click START SIMULATION
-Observe the protocol in action:
+## 📄 Files Included
 
-Watch packets move through the transmission line
-Notice lost packets (red) and their retransmissions
-See the window advance as packets are acknowledged
+- `msr.html` - Main HTML structure
+- `msr.css` - Styles for the visualization
+- `msr.js` - JavaScript implementation of the protocol
 
+## 📝 License
 
-Review the statistics and efficiency metrics
-Experiment with different parameters to see their effects
+MIT License
 
+## 🤝 Contributing
 
-📝 Educational Context
-This visualization is ideal for:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-Students learning computer networking concepts
-Educators teaching reliable data transfer protocols
-Networking professionals refreshing their understanding
-Anyone curious about how internet protocols ensure reliability
+## 📞 Contact
 
+Kavya Tantuvay - kavyatantuvay@gmail.com
 
-📞 Support
-For questions or issues regarding this simulation, please contact your course instructor or refer to computer networking textbooks for additional information on the Selective Repeat Protocol.
+Project Link: https://github.com/kavya-tantuvay/SelectiveRepeatProtocol
+
+---
 
 This project was developed as an educational tool for visualizing and understanding network protocols.
