@@ -2,8 +2,6 @@
 
 An interactive web-based visualization of the Selective Repeat ARQ Protocol, demonstrating how this reliable data transfer protocol works in computer networks.
 
-![Protocol Visualization](https://raw.githubusercontent.com/kavya-tantuvay/SelectiveRepeatProtocol/main/assets/preview.png)
-
 ## 📋 About The Project
 
 This project provides an educational visualization of the Selective Repeat Protocol, allowing users to observe and interact with the protocol's key mechanisms:
