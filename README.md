@@ -140,6 +140,7 @@ Kavya Tantuvay - kavyatantuvay@gmail.com
 
 Project Link: https://github.com/kavya-tantuvay/SelectiveRepeatProtocol
 
+[Watch Demo Video](https://github.com/kavya-tantuvay/SelectiveRepeatProtocol/raw/main/view_sr.mp4)
 ---
 
 This project was developed as an educational tool for visualizing and understanding network protocols.
