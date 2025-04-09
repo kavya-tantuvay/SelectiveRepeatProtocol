@@ -136,7 +136,10 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📞 Contact
 
-Kavya Tantuvay - kavyatantuvay@gmail.com
+- Kavya Tantuvay - kavyatantuvay@gmail.com ,
+- Mudadla Maheswari - maheswarimudadla756@gmail.com ,
+- Nidhi Walke - nidhiwalke26@gmail.com ,
+- Ansita Singh - ansita6050@gmail.com
 
 Project Link: https://github.com/kavya-tantuvay/SelectiveRepeatProtocol
 
