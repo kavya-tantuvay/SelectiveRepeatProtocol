@@ -1,22 +1,21 @@
-// UI Elements
-const startBtn = document.getElementById('startBtn');
-const pauseBtn = document.getElementById('pauseBtn');
-const resumeBtn = document.getElementById('resumeBtn');
-const resetBtn = document.getElementById('resetBtn');
-const speedSlider = document.getElementById('speedSlider');
-const speedVal = document.getElementById('speedVal');
-const senderPackets = document.getElementById('senderPackets');
-const receiverPackets = document.getElementById('receiverPackets');
-const transmissionLine = document.getElementById('transmissionLine');
-const statusLog = document.getElementById('statusLog');
+const startBtn = document.getElementById("startBtn");
+const pauseBtn = document.getElementById("pauseBtn");
+const resumeBtn = document.getElementById("resumeBtn");
+const resetBtn = document.getElementById("resetBtn");
+const speedSlider = document.getElementById("speedSlider");
+const speedVal = document.getElementById("speedVal");
+const senderPackets = document.getElementById("senderPackets");
+const receiverPackets = document.getElementById("receiverPackets");
+const transmissionLine = document.getElementById("transmissionLine");
+const statusLog = document.getElementById("statusLog");
 
 // Statistics elements
-const packetsSentEl = document.getElementById('packetsSent');
-const packetsDeliveredEl = document.getElementById('packetsDelivered');
-const packetsLostEl = document.getElementById('packetsLost');
-const acksLostEl = document.getElementById('acksLost');
-const retransmissionsEl = document.getElementById('retransmissions');
-const efficiencyEl = document.getElementById('efficiency');
+const packetsSentEl = document.getElementById("packetsSent");
+const packetsDeliveredEl = document.getElementById("packetsDelivered");
+const packetsLostEl = document.getElementById("packetsLost");
+const acksLostEl = document.getElementById("acksLost");
+const retransmissionsEl = document.getElementById("retransmissions");
+const efficiencyEl = document.getElementById("efficiency");
 
 // Simulation variables
 let simulation = {
@@ -39,30 +38,37 @@ let simulation = {
     packetsDelivered: 0,
     packetsLost: 0,
     acksLost: 0,
-    retransmissions: 0
+    retransmissions: 0,
   },
-  updateStats: function() {
+  updateStats: function () {
     packetsSentEl.textContent = this.stats.packetsSent;
     packetsDeliveredEl.textContent = this.stats.packetsDelivered;
     packetsLostEl.textContent = this.stats.packetsLost;
     acksLostEl.textContent = this.stats.acksLost;
     retransmissionsEl.textContent = this.stats.retransmissions;
-    
-    const efficiency = this.stats.packetsSent > 0 
-      ? Math.round((this.stats.packetsDelivered / this.stats.packetsSent) * 100) 
-      : 0;
-    efficiencyEl.textContent = efficiency + '%';
-  }
+
+    const efficiency =
+      this.stats.packetsSent > 0
+        ? Math.round(
+            (this.stats.packetsDelivered / this.stats.packetsSent) * 100
+          )
+        : 0;
+    efficiencyEl.textContent = efficiency + "%";
+  },
 };
 
 // Helper Functions
 function log(message) {
-  const entry = document.createElement('div');
-  entry.className = 'log-entry';
-  
+  const entry = document.createElement("div");
+  entry.className = "log-entry";
+
   const time = new Date();
-  const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-  
+  const timeStr = time.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
   entry.innerHTML = `<span class="log-time">[${timeStr}]</span> ${message}`;
   statusLog.appendChild(entry);
   statusLog.scrollTop = statusLog.scrollHeight;
@@ -73,27 +79,28 @@ function getAdjustedTime(time) {
 }
 
 function createSenderPacket(seqNum) {
-  const packet = document.createElement('div');
-  packet.className = 'packet unsent';
+  const packet = document.createElement("div");
+  packet.className = "packet unsent";
   packet.dataset.seqNum = seqNum;
   packet.textContent = seqNum;
-  
+
   simulation.packets[seqNum] = {
     element: packet,
-    status: 'unsent',
+    status: "unsent",
     sent: false,
     acked: false,
-    received: false
+    received: false,
+    retransmitted: false, // Add a new property to track retransmissions
   };
-  
+
   senderPackets.appendChild(packet);
   return packet;
 }
 
 function createReceiverPacket(seqNum) {
-  const packet = document.createElement('div');
-  packet.className = 'packet';
-  packet.style.visibility = 'hidden';
+  const packet = document.createElement("div");
+  packet.className = "packet";
+  packet.style.visibility = "hidden";
   packet.dataset.seqNum = seqNum;
   packet.textContent = seqNum;
   receiverPackets.appendChild(packet);
@@ -103,43 +110,62 @@ function createReceiverPacket(seqNum) {
 function updatePacketStatus(seqNum, status) {
   const packet = simulation.packets[seqNum];
   if (!packet) return;
-  
+
   packet.status = status;
-  packet.element.className = `packet ${status}`;
-  
+
+  // Special handling for retransmitted packets
+  if (status === "sent" && packet.retransmitted) {
+    // Apply a custom style for retransmitted packets
+    packet.element.className = "packet sent";
+    packet.element.style.backgroundColor = "orange"; // Use orange color for retransmitted packets
+  } else {
+    // Reset background color in case it was previously set
+    packet.element.style.backgroundColor = "";
+    packet.element.className = `packet ${status}`;
+  }
+
   // Update packet properties based on status
-  switch(status) {
-    case 'sent':
+  switch (status) {
+    case "sent":
       packet.sent = true;
       break;
-    case 'ack':
+    case "ack":
       packet.acked = true;
       break;
-    case 'received':
+    case "received":
       packet.received = true;
       break;
   }
 }
 
-function createMessage(text, startX, startY, targetX, targetY, duration, color = 'white', backgroundColor = '#2196f3') {
-  const message = document.createElement('div');
-  message.className = 'message slide-in';
+function createMessage(
+  text,
+  startX,
+  startY,
+  targetX,
+  targetY,
+  duration,
+  color = "white",
+  backgroundColor = "#2196f3"
+) {
+  const message = document.createElement("div");
+  message.className = "message slide-in";
   message.textContent = text;
-  message.style.left = startX + 'px';
-  message.style.top = startY + 'px';
+  message.style.left = startX + "px";
+  message.style.top = startY + "px";
   message.style.backgroundColor = backgroundColor;
   message.style.color = color;
-  
+
   transmissionLine.appendChild(message);
-  
+
   // Animate movement
   setTimeout(() => {
-    message.style.left = targetX + 'px';
-    message.style.top = targetY + 'px';
-    
+    message.style.left = targetX + "px";
+    message.style.top = targetY + "px";
+
     setTimeout(() => {
-      message.classList.remove('slide-in');
-      message.classList.add('slide-out');
+      message.classList.remove("slide-in");
+      message.classList.add("slide-out");
       setTimeout(() => {
         if (message.parentNode) {
           message.parentNode.removeChild(message);
@@ -147,101 +173,136 @@ function createMessage(text, startX, startY, targetX, targetY, duration, color =
       }, 500);
     }, duration);
   }, 10);
-  
+
   return message;
 }
 
 function updateWindowMarker() {
   // Remove existing marker
-  const existingMarker = document.querySelector('.window-marker');
+  const existingMarker = document.querySelector(".window-marker");
   if (existingMarker) {
     existingMarker.parentNode.removeChild(existingMarker);
   }
-  
+
   // Create new marker for vertical layout
-  const windowMarker = document.createElement('div');
-  windowMarker.className = 'window-marker';
-  
-  const firstPacket = senderPackets.querySelector(`[data-seq-num="${simulation.base}"]`);
+  const windowMarker = document.createElement("div");
+  windowMarker.className = "window-marker";
+
+  const firstPacket = senderPackets.querySelector(
+    `[data-seq-num="${simulation.base}"]`
+  );
   if (!firstPacket) return;
-  
+
   const packetHeight = firstPacket.offsetHeight;
   const packetMargin = 15; // gap between packets
   const windowHeight = simulation.windowSize * (packetHeight + packetMargin);
-  
-  windowMarker.style.top = (firstPacket.offsetTop - 5) + 'px';
-  windowMarker.style.height = (windowHeight + 5) + 'px';
-  
+
+  windowMarker.style.top = firstPacket.offsetTop - 5 + "px";
+  windowMarker.style.height = windowHeight + 5 + "px";
+
   senderPackets.appendChild(windowMarker);
 }
 
-function sendPacket(seqNum) {
+function sendPacket(seqNum, isRetransmission = false) {
   if (!simulation.running || simulation.paused) return;
-  
+
   const packet = simulation.packets[seqNum];
   if (!packet || packet.acked) return;
-  
-  updatePacketStatus(seqNum, 'sent');
+
+  // Update retransmission status for the packet
+  if (isRetransmission) {
+    packet.retransmitted = true;
+    log(`Retransmitting packet ${seqNum} (shown in orange)`);
+  } else {
+    log(`Sending packet ${seqNum}`);
+  }
+
+  updatePacketStatus(seqNum, "sent");
   simulation.stats.packetsSent++;
-  
-  log(`Sending packet ${seqNum}`);
-  
+
   // Create message animation for vertical layout
   const senderPacket = packet.element;
   const rect = senderPacket.getBoundingClientRect();
   const containerRect = transmissionLine.getBoundingClientRect();
-  
+
   // For vertical layout, we're animating horizontally
-  const startY = rect.top + (rect.height / 2) - containerRect.top;
+  const startY = rect.top + rect.height / 2 - containerRect.top;
   const startX = 0; // Start from left (sender)
-  
+
+  // Determine message color based on retransmission status
+  const messageColor = isRetransmission ? "orange" : "#2196f3";
+
   // Determine if packet is lost
   const isLost = Math.random() * 100 < simulation.lossRate;
-  
+
   if (isLost) {
     simulation.stats.packetsLost++;
     log(`Packet ${seqNum} lost in transmission`);
-    
+
     // Show packet as lost in the middle of transmission line
-    const lostMessage = createMessage(`Packet ${seqNum} lost`, startX, startY, containerRect.width / 2, startY, getAdjustedTime(1000), 'white', 'orangered');
+    const lostMessage = createMessage(
+      `Packet ${seqNum} lost`,
+      startX,
+      startY,
+      containerRect.width / 2,
+      startY,
+      getAdjustedTime(1000),
+      "white",
+      "orangered"
+    );
     simulation.messageElements[`lost-${seqNum}`] = lostMessage;
   } else {
     // Send packet to receiver (animate from left to right)
-    const message = createMessage(`Packet ${seqNum}`, startX, startY, containerRect.width, startY, getAdjustedTime(1500));
+    const message = createMessage(
+      `Packet ${seqNum}`,
+      startX,
+      startY,
+      containerRect.width,
+      startY,
+      getAdjustedTime(1500),
+      "white",
+      messageColor
+    );
     simulation.messageElements[`packet-${seqNum}`] = message;
-    
+
     // Schedule packet to arrive
     setTimeout(() => {
       if (!simulation.running || simulation.paused) return;
-      
+
       // Mark packet as received
-      const receiverPacket = receiverPackets.querySelector(`[data-seq-num="${seqNum}"]`);
+      const receiverPacket = receiverPackets.querySelector(
+        `[data-seq-num="${seqNum}"]`
+      );
       if (receiverPacket) {
-        receiverPacket.className = 'packet received';
-        receiverPacket.style.visibility = 'visible';
+        receiverPacket.className = "packet received";
+        // For retransmitted packets, also update the receiver's packet color
+        if (isRetransmission) {
+          receiverPacket.style.backgroundColor = "orange";
+        }
+        receiverPacket.style.visibility = "visible";
       }
-      
+
       log(`Packet ${seqNum} received by receiver`);
-      
+
       // Send ACK
       sendAck(seqNum);
     }, getAdjustedTime(1500));
   }
-  
+
   // Set timeout for this packet
   simulation.timers[seqNum] = setTimeout(() => {
     if (!simulation.running || simulation.paused) return;
-    
+
     const packet = simulation.packets[seqNum];
     if (packet && !packet.acked) {
-      updatePacketStatus(seqNum, 'timeout');
+      updatePacketStatus(seqNum, "timeout");
       log(`Timeout for packet ${seqNum}, retransmitting`);
-      
+
       // Retransmit packet
       simulation.stats.retransmissions++;
       setTimeout(() => {
         if (!simulation.running || simulation.paused) return;
-        sendPacket(seqNum);
+        sendPacket(seqNum, true); // Mark as retransmission
       }, getAdjustedTime(500));
     }
   }, getAdjustedTime(simulation.timeout));
@@ -249,67 +310,91 @@ function sendPacket(seqNum) {
 
 function sendAck(seqNum) {
   if (!simulation.running || simulation.paused) return;
-  
+
   // Determine if ACK is lost
   const isLost = Math.random() * 100 < simulation.ackLossRate;
-  
-  const receiverPacket = receiverPackets.querySelector(`[data-seq-num="${seqNum}"]`);
+
+  const receiverPacket = receiverPackets.querySelector(
+    `[data-seq-num="${seqNum}"]`
+  );
   if (!receiverPacket) return;
-  
+
   const rect = receiverPacket.getBoundingClientRect();
   const containerRect = transmissionLine.getBoundingClientRect();
-  
+
   // For vertical layout, we're animating horizontally
-  const startY = rect.top + (rect.height / 2) - containerRect.top;
+  const startY = rect.top + rect.height / 2 - containerRect.top;
   const startX = containerRect.width; // Start from right (receiver)
-  
+
   if (isLost) {
     simulation.stats.acksLost++;
     log(`ACK ${seqNum} lost in transmission`);
-    
+
     // Show ACK as lost in the middle of transmission line
-    const lostAckMessage = createMessage(`ACK ${seqNum} lost`, startX, startY, containerRect.width / 2, startY, getAdjustedTime(1000), 'white', 'orangered');
+    const lostAckMessage = createMessage(
+      `ACK ${seqNum} lost`,
+      startX,
+      startY,
+      containerRect.width / 2,
+      startY,
+      getAdjustedTime(1000),
+      "white",
+      "orangered"
+    );
     simulation.messageElements[`lost-ack-${seqNum}`] = lostAckMessage;
   } else {
     // Send ACK to sender (animate from right to left)
-    const ackMessage = createMessage(`ACK ${seqNum}`, startX, startY, 0, startY, getAdjustedTime(1500), 'black', 'limegreen');
+    const ackMessage = createMessage(
+      `ACK ${seqNum}`,
+      startX,
+      startY,
+      0,
+      startY,
+      getAdjustedTime(1500),
+      "black",
+      "limegreen"
+    );
     simulation.messageElements[`ack-${seqNum}`] = ackMessage;
-    
+
     // Schedule ACK to arrive
     setTimeout(() => {
       if (!simulation.running || simulation.paused) return;
-      
+
       // Mark packet as acknowledged
-      updatePacketStatus(seqNum, 'ack');
+      updatePacketStatus(seqNum, "ack");
       log(`ACK ${seqNum} received by sender`);
-      
+
       // Clear the timeout for this packet
       if (simulation.timers[seqNum]) {
         clearTimeout(simulation.timers[seqNum]);
         delete simulation.timers[seqNum];
       }
-      
+
       simulation.stats.packetsDelivered++;
-      
+
       // If this is the base packet, advance the window
       if (seqNum === simulation.base) {
         let nextBase = simulation.base + 1;
-        
+
         // Find the next unacknowledged packet
-        while (simulation.packets[nextBase] && simulation.packets[nextBase].acked && nextBase < simulation.totalPackets) {
+        while (
+          simulation.packets[nextBase] &&
+          simulation.packets[nextBase].acked &&
+          nextBase < simulation.totalPackets
+        ) {
           nextBase++;
         }
-        
+
         if (nextBase !== simulation.base) {
           simulation.base = nextBase;
           log(`Window base advanced to ${simulation.base}`);
           updateWindowMarker();
-          
+
           // Send more packets if possible
           trySendingNextPackets();
         }
       }
-      
+
       // Update statistics
       simulation.updateStats();
     }, getAdjustedTime(1500));
@@ -318,12 +403,14 @@ function sendAck(seqNum) {
 
 function trySendingNextPackets() {
   if (!simulation.running || simulation.paused) return;
-  
-  while (simulation.nextSeqNum < simulation.base + simulation.windowSize && 
-         simulation.nextSeqNum < simulation.totalPackets) {
+
+  while (
+    simulation.nextSeqNum < simulation.base + simulation.windowSize &&
+    simulation.nextSeqNum < simulation.totalPackets
+  ) {
     sendPacket(simulation.nextSeqNum++);
   }
-  
+
   // If all packets have been acknowledged, end simulation
   let allAcked = true;
   for (let i = 0; i < simulation.totalPackets; i++) {
@@ -332,72 +419,76 @@ function trySendingNextPackets() {
       break;
     }
   }
-  
+
   if (allAcked) {
-    log('All packets successfully transmitted and acknowledged');
+    log("All packets successfully transmitted and acknowledged");
     simulation.running = false;
-    startBtn.textContent = 'RESTART SIMULATION';
-    pauseBtn.style.display = 'none';
-    resumeBtn.style.display = 'none';
+    startBtn.textContent = "RESTART SIMULATION";
+    pauseBtn.style.display = "none";
+    resumeBtn.style.display = "none";
   }
 }
 
 function startSimulation() {
   // Reset everything
   resetSimulation();
-  
+
   // Get configuration
-  simulation.windowSize = parseInt(document.getElementById('windowSize').value);
-  simulation.totalPackets = parseInt(document.getElementById('totalPackets').value);
-  simulation.lossRate = parseInt(document.getElementById('lossRate').value);
-  simulation.ackLossRate = parseInt(document.getElementById('ackLossRate').value);
-  simulation.timeout = parseInt(document.getElementById('timeout').value);
+  simulation.windowSize = parseInt(document.getElementById("windowSize").value);
+  simulation.totalPackets = parseInt(
+    document.getElementById("totalPackets").value
+  );
+  simulation.lossRate = parseInt(document.getElementById("lossRate").value);
+  simulation.ackLossRate = parseInt(
+    document.getElementById("ackLossRate").value
+  );
+  simulation.timeout = parseInt(document.getElementById("timeout").value);
   simulation.speed = parseFloat(speedSlider.value);
-  
+
   // Create packets
   for (let i = 0; i < simulation.totalPackets; i++) {
     createSenderPacket(i);
     createReceiverPacket(i);
   }
-  
+
   // Mark running
   simulation.running = true;
   simulation.paused = false;
-  
+
   // Update UI
-  startBtn.textContent = 'RESTART SIMULATION';
-  pauseBtn.style.display = 'inline-block';
-  resumeBtn.style.display = 'none';
-  
+  startBtn.textContent = "RESTART SIMULATION";
+  pauseBtn.style.display = "inline-block";
+  resumeBtn.style.display = "none";
+
   // Show window
   updateWindowMarker();
-  
+
   // Log start
-  log('Simulation started');
-  
+  log("Simulation started");
+
   // Start sending packets
   trySendingNextPackets();
 }
 
 function pauseSimulation() {
   if (!simulation.running) return;
-  
+
   simulation.paused = true;
-  pauseBtn.style.display = 'none';
-  resumeBtn.style.display = 'inline-block';
-  
-  log('Simulation paused');
+  pauseBtn.style.display = "none";
+  resumeBtn.style.display = "inline-block";
+
+  log("Simulation paused");
 }
 
 function resumeSimulation() {
   if (!simulation.running) return;
-  
+
   simulation.paused = false;
-  pauseBtn.style.display = 'inline-block';
-  resumeBtn.style.display = 'none';
-  
-  log('Simulation resumed');
-  
+  pauseBtn.style.display = "inline-block";
+  resumeBtn.style.display = "none";
+
+  log("Simulation resumed");
+
   // Continue with any pending operations
   trySendingNextPackets();
 }
@@ -407,7 +498,7 @@ function resetSimulation() {
   for (const seqNum in simulation.timers) {
     clearTimeout(simulation.timers[seqNum]);
   }
-  
+
   // Reset simulation state
   simulation.running = false;
   simulation.paused = false;
@@ -422,33 +513,33 @@ function resetSimulation() {
     packetsDelivered: 0,
     packetsLost: 0,
     acksLost: 0,
-    retransmissions: 0
+    retransmissions: 0,
   };
-  
+
   // Update statistics
   simulation.updateStats();
-  
+
   // Clear UI
-  senderPackets.innerHTML = '';
-  receiverPackets.innerHTML = '';
-  transmissionLine.innerHTML = '';
-  
+  senderPackets.innerHTML = "";
+  receiverPackets.innerHTML = "";
+  transmissionLine.innerHTML = "";
+
   // Reset buttons
-  startBtn.textContent = 'START SIMULATION';
-  pauseBtn.style.display = 'inline-block';
-  resumeBtn.style.display = 'none';
-  
-  log('Simulation reset');
+  startBtn.textContent = "START SIMULATION";
+  pauseBtn.style.display = "inline-block";
+  resumeBtn.style.display = "none";
+
+  log("Simulation reset");
 }
 
 // Event listeners
-startBtn.addEventListener('click', startSimulation);
-pauseBtn.addEventListener('click', pauseSimulation);
-resumeBtn.addEventListener('click', resumeSimulation);
-resetBtn.addEventListener('click', resetSimulation);
+startBtn.addEventListener("click", startSimulation);
+pauseBtn.addEventListener("click", pauseSimulation);
+resumeBtn.addEventListener("click", resumeSimulation);
+resetBtn.addEventListener("click", resetSimulation);
 
-speedSlider.addEventListener('input', () => {
-  speedVal.textContent = speedSlider.value + 'x';
+speedSlider.addEventListener("input", () => {
+  speedVal.textContent = speedSlider.value + "x";
   simulation.speed = parseFloat(speedSlider.value);
 });
 

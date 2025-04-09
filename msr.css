@@ -192,6 +192,11 @@ p.description {
   border-radius: 3px;
 }
 
+/* new modification */
+.legend .retransmitted {
+  background-color: orange;
+}
+
 .unsent { background-color: #eee; }
 .sent { background-color: gold; }
 .ack { background-color: limegreen; }
