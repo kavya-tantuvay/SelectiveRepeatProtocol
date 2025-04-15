@@ -1,3 +1,86 @@
+// Theme toggle functionality
+const themeToggle = document.getElementById("themeToggle");
+const htmlElement = document.documentElement;
+
+// Check for saved theme preference or use system preference
+function getPreferredTheme() {
+  const savedTheme = localStorage.getItem("theme");
+  if (savedTheme) {
+    return savedTheme;
+  }
+  // Check if system prefers dark mode
+  return window.matchMedia("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+// Apply theme
+function applyTheme(theme) {
+  htmlElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+}
+
+// Toggle theme
+function toggleTheme() {
+  const currentTheme = htmlElement.getAttribute("data-theme");
+  const newTheme = currentTheme === "dark" ? "light" : "dark";
+  applyTheme(newTheme);
+
+  // Log theme change
+  if (typeof log === "function") {
+    log(`Switched to ${newTheme} theme`);
+  }
+}
+
+// Set initial theme
+applyTheme(getPreferredTheme());
+
+// Add event listener
+themeToggle.addEventListener("click", toggleTheme);
+
+// Update the createMessage function to respect current theme
+// Find the existing createMessage function and modify it to:
+function createMessage(
+  text,
+  startX,
+  startY,
+  targetX,
+  targetY,
+  duration,
+  color = "white",
+  backgroundColor = "#2196f3"
+) {
+  const message = document.createElement("div");
+  message.className = "message slide-in";
+  message.textContent = text;
+  message.style.left = startX + "px";
+  message.style.top = startY + "px";
+
+  // Keep using the passed backgroundColor for specific message types (like warnings, errors)
+  message.style.backgroundColor = backgroundColor;
+  message.style.color = color;
+
+  transmissionLine.appendChild(message);
+
+  // Animate movement
+  setTimeout(() => {
+    message.style.left = targetX + "px";
+    message.style.top = targetY + "px";
+
+    setTimeout(() => {
+      message.classList.remove("slide-in");
+      message.classList.add("slide-out");
+      setTimeout(() => {
+        if (message.parentNode) {
+          message.parentNode.removeChild(message);
+        }
+      }, 500);
+    }, duration);
+  }, 10);
+
+  return message;
+}
+
 const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const resumeBtn = document.getElementById("resumeBtn");

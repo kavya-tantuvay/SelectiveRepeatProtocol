@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -9,6 +9,13 @@
 </head>
 
 <body>
+  <div class="theme-toggle-container">
+    <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+      <span class="theme-toggle-light">☀️</span>
+      <span class="theme-toggle-dark">🌙</span>
+    </button>
+  </div>
+  
   <h1>Selective Repeat Protocol Visualization</h1>
   <p class="description">
     The Selective Repeat Protocol is a reliable data transfer protocol that allows the sender to transmit multiple packets
@@ -61,14 +68,14 @@
     <!-- Middle Column: Simulation -->
     <div class="simulation-container">
       <div class="legend">
-  <div><span class="unsent"></span>Unsent</div>
-  <div><span class="sent"></span>Sent/In Transit</div>
-  <div><span class="retransmitted"></span>Retransmitted Packet</div>
-  <div><span class="ack"></span>Acknowledged</div>
-  <div><span class="timeout"></span>Timeout</div>
-  <div><span class="lost"></span>Lost Packet</div>
-  <div><span class="received"></span>Received</div>
-</div>
+        <div><span class="unsent"></span>Unsent</div>
+        <div><span class="sent"></span>Sent/In Transit</div>
+        <div><span class="retransmitted"></span>Retransmitted Packet</div>
+        <div><span class="ack"></span>Acknowledged</div>
+        <div><span class="timeout"></span>Timeout</div>
+        <div><span class="lost"></span>Lost Packet</div>
+        <div><span class="received"></span>Received</div>
+      </div>
 
       <div class="simulation-area" id="simulationArea">
         <div class="timeline">

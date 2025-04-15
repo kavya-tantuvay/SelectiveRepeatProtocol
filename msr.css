@@ -1,13 +1,121 @@
+/* Theme variables */
+:root {
+  /* Light theme (default) */
+  --bg-color: #f5f8fc;
+  --text-color: #444;
+  --heading-color: #2196f3;
+  --box-bg: white;
+  --box-shadow: 0 8px 20px rgba(33, 150, 243, 0.15);
+  --input-bg: #f5f8fc;
+  --input-border: #ccc;
+  --input-text: #2196f3;
+  --legend-bg: white;
+  --legend-text: #333;
+  --log-bg: #f5f5f5;
+  --log-border: #e0e0e0;
+  --log-text: #333;
+  --log-time: #666;
+  --network-component-bg: #f0f0f0;
+  --button-hover-shadow: rgba(0, 0, 0, 0.15);
+  --ack-color: limegreen;
+  --packet-lost-color: orangered;
+  --packet-timeout-color: crimson;
+  --packet-sent-color: gold;
+  --packet-received-color: dodgerblue;
+  --packet-retransmitted-color: orange;
+  --packet-unsent-color: #eee;
+  --transmission-line-color: #ddd;
+  --window-marker-border: 2px dashed #2196f3;
+  --window-marker-bg: rgba(33, 150, 243, 0.1);
+}
+
+[data-theme="dark"] {
+  --bg-color: #121212;
+  --text-color: #e0e0e0;
+  --heading-color: #64b5f6;
+  --box-bg: #1e1e1e;
+  --box-shadow: 0 8px 20px rgba(33, 150, 243, 0.25);
+  --input-bg: #2c2c2c;
+  --input-border: #555;
+  --input-text: #64b5f6;
+  --legend-bg: #1e1e1e;
+  --legend-text: #e0e0e0;
+  --log-bg: #2c2c2c;
+  --log-border: #444;
+  --log-text: #e0e0e0;
+  --log-time: #aaa;
+  --network-component-bg: #2c2c2c;
+  --button-hover-shadow: rgba(100, 181, 246, 0.3);
+  --ack-color: #66bb6a;
+  --packet-lost-color: #ff5722;
+  --packet-timeout-color: #e53935;
+  --packet-sent-color: #ffd54f;
+  --packet-received-color: #42a5f5;
+  --packet-retransmitted-color: #ffa726;
+  --packet-unsent-color: #555;
+  --transmission-line-color: #555;
+  --window-marker-border: 2px dashed #64b5f6;
+  --window-marker-bg: rgba(100, 181, 246, 0.15);
+}
+
+/* Theme toggle button */
+.theme-toggle-container {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  z-index: 100;
+}
+
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  background-color: var(--box-bg);
+  transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+}
+
+.theme-toggle-light {
+  display: none;
+}
+
+.theme-toggle-dark {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle-light {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle-dark {
+  display: none;
+}
+
+/* Existing CSS with variable updates */
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f5f8fc;
+  background-color: var(--bg-color);
+  color: var(--text-color);
   padding: 1rem;
   min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 h1 {
-  color: #2196f3;
+  color: var(--heading-color);
   font-size: 2rem;
   text-align: center;
   margin: 0.5rem 0;
@@ -18,7 +126,7 @@ p.description {
   max-width: 800px;
   margin: 0.5rem auto 1rem;
   font-size: 1rem;
-  color: #444;
+  color: var(--text-color);
 }
 
 .main-container {
@@ -52,17 +160,18 @@ p.description {
 }
 
 .config-box {
-  background-color: white;
+  background-color: var(--box-bg);
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(33, 150, 243, 0.15);
+  box-shadow: var(--box-shadow);
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .config-box h2 {
-  color: #2196f3;
+  color: var(--heading-color);
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1.4rem;
@@ -79,10 +188,10 @@ p.description {
 .config-params label {
   display: flex;
   flex-direction: column;
-  background-color: #f5f8fc;
+  background-color: var(--input-bg);
   padding: 8px 12px;
   border-radius: 8px;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.3s;
 }
 
 .config-params label:hover {
@@ -93,18 +202,20 @@ p.description {
 .config-params label span {
   font-size: 0.9rem;
   margin-bottom: 5px;
-  color: #555;
+  color: var(--text-color);
   font-weight: 500;
 }
 
 .config-box input[type="number"] {
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border);
   border-radius: 6px;
   text-align: center;
   font-size: 1rem;
-  color: #2196f3;
+  color: var(--input-text);
   font-weight: bold;
+  background-color: var(--box-bg);
+  transition: background-color 0.3s, color 0.3s, border 0.3s;
 }
 
 .button-group {
@@ -127,7 +238,7 @@ p.description {
 
 .button-group button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  box-shadow: 0 5px 10px var(--button-hover-shadow);
 }
 
 #startBtn { background-color: #2196f3; color: white; }
@@ -151,7 +262,7 @@ p.description {
   flex-direction: column;
   gap: 8px;
   font-weight: 500;
-  color: #555;
+  color: var(--text-color);
   width: 100%;
 }
 
@@ -161,7 +272,7 @@ p.description {
 
 #speedVal {
   font-weight: bold;
-  color: #2196f3;
+  color: var(--input-text);
   text-align: center;
 }
 
@@ -171,17 +282,18 @@ p.description {
   justify-content: center;
   margin: 1rem 0;
   flex-wrap: wrap;
-  background-color: white;
+  background-color: var(--legend-bg);
   padding: 10px;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: background-color 0.3s;
 }
 
 .legend div {
   display: flex;
   align-items: center;
   font-size: 0.8rem;
-  color: #333;
+  color: var(--legend-text);
 }
 
 .legend span {
@@ -192,28 +304,28 @@ p.description {
   border-radius: 3px;
 }
 
-/* new modification */
 .legend .retransmitted {
-  background-color: orange;
+  background-color: var(--packet-retransmitted-color);
 }
 
-.unsent { background-color: #eee; }
-.sent { background-color: gold; }
-.ack { background-color: limegreen; }
-.timeout { background-color: crimson; }
-.lost { background-color: orangered; }
-.received { background-color: dodgerblue; }
+.unsent { background-color: var(--packet-unsent-color); }
+.sent { background-color: var(--packet-sent-color); }
+.ack { background-color: var(--ack-color); }
+.timeout { background-color: var(--packet-timeout-color); }
+.lost { background-color: var(--packet-lost-color); }
+.received { background-color: var(--packet-received-color); }
 
 .simulation-area {
   flex-grow: 1;
   display: flex;
   justify-content: center;
   position: relative;
-  background-color: white;
+  background-color: var(--box-bg);
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(33, 150, 243, 0.15);
+  box-shadow: var(--box-shadow);
   padding: 15px;
   overflow: hidden;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .timeline {
@@ -224,26 +336,28 @@ p.description {
 
 .sender, .receiver {
   width: 100px;
-  background-color: #f0f0f0;
+  background-color: var(--network-component-bg);
   border-radius: 8px;
   padding: 15px;
   text-align: center;
   height: 100%;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s;
 }
 
 .transmission-line {
   flex-grow: 1;
   margin: 0 20px;
   position: relative;
-  background: linear-gradient(to right, transparent 49%, #ddd 49%, #ddd 51%, transparent 51%);
+  background: linear-gradient(to right, transparent 49%, var(--transmission-line-color) 49%, var(--transmission-line-color) 51%, transparent 51%);
+  transition: background 0.3s;
 }
 
 .sender-label, .receiver-label {
   font-weight: bold;
   margin-bottom: 10px;
-  color: #2196f3;
+  color: var(--heading-color);
 }
 
 .packet-container {
@@ -274,7 +388,7 @@ p.description {
   position: absolute;
   padding: 5px 10px;
   border-radius: 4px;
-  background-color: white;
+  background-color: var(--box-bg);
   box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   font-size: 0.8rem;
   z-index: 10;
@@ -286,26 +400,28 @@ p.description {
 .window-marker {
   position: absolute;
   width: calc(100% - 10px);
-  border: 2px dashed #2196f3;
-  background-color: rgba(33, 150, 243, 0.1);
+  border: var(--window-marker-border);
+  background-color: var(--window-marker-bg);
   z-index: 0;
   border-radius: 6px;
   left: 5px;
+  transition: border 0.3s, background-color 0.3s;
 }
 
 .statistics {
-  background-color: white;
+  background-color: var(--box-bg);
   padding: 15px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--box-shadow);
   flex-grow: 1;
   margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .statistics h3 {
-  color: #2196f3;
+  color: var(--heading-color);
   margin-top: 0;
   margin-bottom: 0.8rem;
   font-size: 1.2rem;
@@ -314,6 +430,7 @@ p.description {
 .stat-item {
   margin-bottom: 8px;
   font-size: 0.9rem;
+  color: var(--text-color);
 }
 
 .status-log {
@@ -322,20 +439,22 @@ p.description {
   min-height: 150px;
   overflow-y: auto;
   padding: 10px;
-  background-color: #f5f5f5;
+  background-color: var(--log-bg);
   border-radius: 8px;
   font-family: monospace;
   font-size: 0.85rem;
+  color: var(--log-text);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .log-entry {
   margin-bottom: 5px;
   padding: 3px 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 1px solid var(--log-border);
 }
 
 .log-time {
-  color: #666;
+  color: var(--log-time);
   font-size: 0.8rem;
 }
 
