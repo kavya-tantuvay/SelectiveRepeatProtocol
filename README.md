@@ -1,5 +1,13 @@
 # Selective Repeat Protocol Visualization
 
+# Group Number : 3 (Topic 1)
+
+# Group Members : 
+- Nidhi Walke (2023BCS041)
+- Kavya Tantunvay (2023BCS032)
+- Mudadla Maheswari (2023BCS037)
+- Ansita Singh (2023BCS075)
+
 An interactive web-based visualization of the Selective Repeat ARQ Protocol, demonstrating how this reliable data transfer protocol works in computer networks.
 
 ## 📋 About The Project
