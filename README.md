@@ -28,41 +28,28 @@ This project provides an educational visualization of the Selective Repeat Proto
 
 ### Installation & Running the Project
 
-#### Method 1: Direct Download and Open
+#### Method 1: Using VS Code Live Server
 
-Clone the repository or download the ZIP file:
-```bash
-git clone https://github.com/kavya-tantuvay/SelectiveRepeatProtocol.git
-```
-
-Navigate to the project directory:
-```bash
-cd SelectiveRepeatProtocol
-```
-
-Open the HTML file directly in your browser:
-- Double-click on msr.html, or
-- Drag msr.html into an open browser window
-
-#### Method 2: Using VS Code Live Server
-
-1. Install Visual Studio Code if you haven't already: [Download VS Code](https://code.visualstudio.com/download)
-2. Install the Live Server extension:
-   - Open VS Code
+1. Open this folder (SelectiveRepeatProtocol) in Visual Studio Code
+2. Install the Live Server extension if you haven't already:
    - Go to Extensions (or press Ctrl+Shift+X)
    - Search for "Live Server"
    - Click "Install" on the extension by Ritwick Dey
 
-3. Open the project folder in VS Code:
-```bash
-code SelectiveRepeatProtocol
-```
-
-4. Launch with Live Server:
+3. Launch with Live Server:
    - Right-click on msr.html
    - Select "Open with Live Server"
    - The project will open in your default browser at http://127.0.0.1:5500/msr.html (or similar port)
-     
+
+#### Method 2: GitHub
+
+You can access the project directly from GitHub:
+- Visit our GitHub repository: [SelectiveRepeatProtocol](https://github.com/kavya-tantuvay/SelectiveRepeatProtocol)
+- Clone the repository using:
+```bash
+git clone https://github.com/kavya-tantuvay/SelectiveRepeatProtocol.git
+```
+- Open the downloaded folder and access msr.html in your browser
 
 ## 💻 Using the Simulation
 
@@ -142,9 +129,9 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## 📞 Contact
 
-- Kavya Tantuvay - kavyatantuvay@gmail.com ,
-- Mudadla Maheswari - maheswarimudadla756@gmail.com ,
-- Nidhi Walke - nidhiwalke26@gmail.com ,
+- Kavya Tantuvay - kavyatantuvay@gmail.com
+- Mudadla Maheswari - maheswarimudadla756@gmail.com
+- Nidhi Walke - nidhiwalke26@gmail.com
 - Ansita Singh - ansita6050@gmail.com
 
 Project Link: https://github.com/kavya-tantuvay/SelectiveRepeatProtocol
